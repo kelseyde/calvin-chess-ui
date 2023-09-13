@@ -1,0 +1,6 @@
+/// <reference types="react" />
+import { ChessboardProps } from "./types";
+export type ClearPremoves = {
+    clearPremoves: (clearLastPieceColour?: boolean) => void;
+};
+export declare const Chessboard: import("react").ForwardRefExoticComponent<Pick<ChessboardProps, "animationDuration" | "areArrowsAllowed" | "arePiecesDraggable" | "arePremovesAllowed" | "boardOrientation" | "boardWidth" | "clearPremovesOnRightClick" | "customArrows" | "customArrowColor" | "customBoardStyle" | "customDarkSquareStyle" | "customDndBackend" | "customDndBackendOptions" | "customDropSquareStyle" | "customLightSquareStyle" | "customPieces" | "customPremoveDarkSquareStyle" | "customPremoveLightSquareStyle" | "customSquare" | "customSquareStyles" | "dropOffBoardAction" | "id" | "isDraggablePiece" | "getPositionObject" | "onArrowsChange" | "onDragOverSquare" | "onMouseOutSquare" | "onMouseOverSquare" | "onPieceClick" | "onPieceDragBegin" | "onPieceDragEnd" | "onPieceDrop" | "onPromotionCheck" | "onPromotionPieceSelect" | "onSquareClick" | "onSquareRightClick" | "position" | "promotionDialogVariant" | "promotionToSquare" | "showBoardNotation" | "showPromotionDialog" | "snapToCursor" | "autoPromoteToQueen"> & import("react").RefAttributes<ClearPremoves>>;

@@ -1,0 +1,73 @@
+import { ReactNode } from "react";
+import { BoardPosition, ChessboardProps, CustomPieces, Piece, Square } from "../types";
+interface ChessboardProviderProps extends ChessboardProps {
+    boardWidth: number;
+    children: ReactNode;
+}
+type Premove = {
+    sourceSq: Square;
+    targetSq: Square;
+    piece: Piece;
+};
+type RequiredChessboardProps = Required<ChessboardProps>;
+interface ChessboardProviderContext {
+    animationDuration: RequiredChessboardProps["animationDuration"];
+    arePiecesDraggable: RequiredChessboardProps["arePiecesDraggable"];
+    arePremovesAllowed: RequiredChessboardProps["arePremovesAllowed"];
+    boardOrientation: RequiredChessboardProps["boardOrientation"];
+    boardWidth: RequiredChessboardProps["boardWidth"];
+    customArrowColor: RequiredChessboardProps["customArrowColor"];
+    customBoardStyle: ChessboardProps["customBoardStyle"];
+    customDarkSquareStyle: RequiredChessboardProps["customDarkSquareStyle"];
+    customDropSquareStyle: RequiredChessboardProps["customDropSquareStyle"];
+    customLightSquareStyle: RequiredChessboardProps["customLightSquareStyle"];
+    customPremoveDarkSquareStyle: RequiredChessboardProps["customPremoveDarkSquareStyle"];
+    customPremoveLightSquareStyle: RequiredChessboardProps["customPremoveLightSquareStyle"];
+    customSquare: RequiredChessboardProps["customSquare"];
+    customSquareStyles: ChessboardProps["customSquareStyles"];
+    id: RequiredChessboardProps["id"];
+    isDraggablePiece: RequiredChessboardProps["isDraggablePiece"];
+    onDragOverSquare: RequiredChessboardProps["onDragOverSquare"];
+    onMouseOutSquare: RequiredChessboardProps["onMouseOutSquare"];
+    onMouseOverSquare: RequiredChessboardProps["onMouseOverSquare"];
+    onPieceClick: RequiredChessboardProps["onPieceClick"];
+    onPieceDragBegin: RequiredChessboardProps["onPieceDragBegin"];
+    onPieceDragEnd: RequiredChessboardProps["onPieceDragEnd"];
+    onPieceDrop: RequiredChessboardProps["onPieceDrop"];
+    onPromotionCheck: RequiredChessboardProps["onPromotionCheck"];
+    onPromotionPieceSelect: ChessboardProps["onPromotionPieceSelect"];
+    onSquareClick: RequiredChessboardProps["onSquareClick"];
+    promotionDialogVariant: RequiredChessboardProps["promotionDialogVariant"];
+    showBoardNotation: RequiredChessboardProps["showBoardNotation"];
+    snapToCursor: RequiredChessboardProps["snapToCursor"];
+    autoPromoteToQueen: RequiredChessboardProps["autoPromoteToQueen"];
+    arrows: Square[][];
+    chessPieces: CustomPieces | Record<string, ReactNode>;
+    clearArrows: () => void;
+    clearCurrentRightClickDown: () => void;
+    currentPosition: BoardPosition;
+    handleSetPosition: (sourceSq: Square, targetSq: Square, piece: Piece, wasManualDropOverride?: boolean) => void;
+    isWaitingForAnimation: boolean;
+    lastPieceColour: string | undefined;
+    onRightClickDown: (square: Square) => void;
+    onRightClickUp: (square: Square) => void;
+    positionDifferences: {
+        added: BoardPosition;
+        removed: BoardPosition;
+    };
+    premoves: Premove[];
+    promoteFromSquare: Square | null;
+    promoteToSquare: Square | null;
+    setPromoteFromSquare: React.Dispatch<React.SetStateAction<Square | null>>;
+    setPromoteToSquare: React.Dispatch<React.SetStateAction<Square | null>>;
+    setShowPromoteDialog: React.Dispatch<React.SetStateAction<boolean>>;
+    showPromoteDialog: boolean;
+    newArrow?: Square[];
+    onArrowDrawEnd: (from: Square, to: Square) => void;
+    drawNewArrow: (from: Square, to: Square) => void;
+    currentRightClickDown?: Square;
+}
+export declare const ChessboardContext: import("react").Context<ChessboardProviderContext>;
+export declare const useChessboard: () => ChessboardProviderContext;
+export declare const ChessboardProvider: import("react").ForwardRefExoticComponent<Pick<ChessboardProviderProps, "animationDuration" | "areArrowsAllowed" | "arePiecesDraggable" | "arePremovesAllowed" | "boardOrientation" | "boardWidth" | "clearPremovesOnRightClick" | "customArrows" | "customArrowColor" | "customBoardStyle" | "customDarkSquareStyle" | "customDndBackend" | "customDndBackendOptions" | "customDropSquareStyle" | "customLightSquareStyle" | "customPieces" | "customPremoveDarkSquareStyle" | "customPremoveLightSquareStyle" | "customSquare" | "customSquareStyles" | "dropOffBoardAction" | "id" | "isDraggablePiece" | "getPositionObject" | "onArrowsChange" | "onDragOverSquare" | "onMouseOutSquare" | "onMouseOverSquare" | "onPieceClick" | "onPieceDragBegin" | "onPieceDragEnd" | "onPieceDrop" | "onPromotionCheck" | "onPromotionPieceSelect" | "onSquareClick" | "onSquareRightClick" | "position" | "promotionDialogVariant" | "promotionToSquare" | "showBoardNotation" | "showPromotionDialog" | "snapToCursor" | "autoPromoteToQueen" | "children"> & import("react").RefAttributes<unknown>>;
+export {};
