@@ -9,7 +9,7 @@ function App() {
     <>
       <div>
           <img src="/calvin.png" className="logo"/>
-          <h1>Calvin Chess Engine</h1>
+          <h1 className="title">Calvin Chess Engine</h1>
       </div>
       <div>
           <Chessboard id="BasicBoard" />
