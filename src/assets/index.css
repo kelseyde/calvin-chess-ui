@@ -5,6 +5,10 @@
     text-align: center;
 }
 
+#BasicBoard {
+    height: 200px;
+}
+
 .logo {
     height: 5em;
 }

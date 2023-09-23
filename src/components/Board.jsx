@@ -1,58 +1,81 @@
 import '../assets/index.css'
-import { useState } from "react";
+import {useMemo, useState} from "react";
 import { Chessboard } from "react-chessboard";
+import { Chess } from 'chess.js'
+import useSound from 'use-sound';
+import gameStartSound from "../assets/sounds/game-start.mp3"
+import moveSound from "../assets/sounds/move-self.mp3"
+import captureSound from "../assets/sounds/capture.mp3"
+import castleSound from "../assets/sounds/castle.mp3"
+import checkSound from "../assets/sounds/capture.mp3"
+import promotionSound from "../assets/sounds/promote.mp3";
 
 export default function Board({gameId}) {
-    const [position, setPosition] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    const [promotionType, setPromotionType] = useState(undefined);
+    const game = useMemo(() => new Chess(), []);
+    const [playMoveSound] = useSound(moveSound);
+    const [gamePosition, setGamePosition] = useState(game.fen());
 
-    function onMove(startSquare, endSquare, piece) {
-        console.log(`start square ${startSquare}, end square ${endSquare}, piece ${piece}`);
-        const promotionPieceCodeMap = {
-            'B': 'BISHOP',
-            'N': 'KNIGHT',
-            'R': 'ROOK',
-            'Q': 'QUEEN',
-        }
-
-        let data = {
+    function onDrop(startSquare, endSquare, piece) {
+        const move = {
             gameId: gameId,
-            startSquare: startSquare,
-            endSquare: endSquare
+            from: startSquare,
+            to: endSquare,
+            promotion: piece[1].toLowerCase() ?? "q",
         };
-        console.log(promotionPieceCodeMap[piece[1]]);
-        console.log(!!promotionPieceCodeMap[piece[1]])
-        if (!!promotionPieceCodeMap[piece[1]]) {
-            data.promotionPieceType = promotionPieceCodeMap[piece[1]];
-        }
-        const requestOptions = {
+        const result = game.move(move);
+        setGamePosition(game.fen());
+        playMoveSound();
+        if (result === null) return false; // illegal move
+        if (game.isGameOver()) return false; // TODO needed?
+        fetchEngineResponse(move);
+        return true;
+
+    }
+
+    function fetchEngineResponse(move) {
+        const request = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(move)
         };
-        console.log(requestOptions);
-        fetch('http://localhost:8080/calvin/game/play', requestOptions)
+        fetch('http://localhost:8080/calvin/game/play', request)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                if (!data.result.validMove) {
-                    console.log("Invalid move!");
-                } else {
-                    setPosition(data.position);
-                }
+                console.log(data)
+                game.move({
+                    from: data.move.from,
+                    to: data.move.to,
+                    promotion: data.move.promotion,
+                });
+                setGamePosition(game.fen());
+                playMoveSound();
             });
+    }
 
-    }
-    function onPositionChange(positionObject) {
-        console.log(positionObject);
-    }
+
     return (
         <div>
             <Chessboard id="BasicBoard"
-                        position={position}
-                        onPieceDrop={onMove}
-                        getPositionObject={onPositionChange}
+                        position={gamePosition}
+                        onPieceDrop={onDrop}
             />
+            <button
+                onClick={() => {
+                    game.reset();
+                    setGamePosition(game.fen());
+                }}
+            >
+                New Game
+            </button>
+            <button
+                onClick={() => {
+                    game.undo();
+                    game.undo();
+                    setGamePosition(game.fen());
+                }}
+            >
+                Undo
+            </button>
         </div>
     )
 }
