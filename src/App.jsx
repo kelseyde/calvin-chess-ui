@@ -1,6 +1,8 @@
 import './assets/index.css'
 import React, { useEffect, useState } from "react"
+import SideBar from "./components/SideBar.jsx";
 import Board from "./components/Board.jsx";
+import GameInfo from "./components/GameInfo.jsx";
 
 const App = () => {
     const [gameId, setGameId] = useState('');
@@ -19,13 +21,11 @@ const App = () => {
 
   return (
     <>
-      <div>
-          <img src="/calvin.png" className="logo" alt="Calvin logo"/>
-          <h1 className="title">Calvin Chess Engine</h1>
-      </div>
-      <div>
-          <Board id="BasicBoard" gameId={gameId}/>
-      </div>
+        <div className="FlexContainer">
+            <SideBar id="SideBar"/>
+            <Board id="ChessBoard" gameId={gameId}/>
+            <GameInfo id="GameInfo"/>
+        </div>
     </>
   )
 }
